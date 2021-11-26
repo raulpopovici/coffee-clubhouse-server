@@ -98,6 +98,15 @@ const me = async(req,res) => {
 }
 
 
+const getAll = async(req,res) => {
+    try{
+        const getUsers = await pool.query("SELECT * FROM users");
+        return res.status(200).send(getUsers.rows);
+    }catch(error){
+        return res.status(500).send({error:"error on get all users"});
+    }
+}
+
 
 
 const router = Router();
@@ -105,4 +114,5 @@ const router = Router();
 router.post('/register',createUser);
 router.post('/login',login);
 router.post('/me',me);
+router.get('/store',getAll);
 module.exports = router;

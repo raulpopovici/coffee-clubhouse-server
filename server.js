@@ -5,6 +5,7 @@ dotenv.config();
 
 const cors=require("cors");
 const userRouter = require("./Routes/users");
+const productRouter = require("./Routes/products");
 const app = express();
 
 app.use(express.json()); //express. json() is a method inbuilt in express to recognize the incoming Request Object as a JSON Object
@@ -18,6 +19,7 @@ app.use(
 );
 
 app.use("/api",userRouter);
+app.use("/api",productRouter)
 
 app.listen(process.env.PORT,()=>{
     console.log("Server running on port 5000")
