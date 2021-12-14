@@ -31,7 +31,20 @@ const getAllProducts = async(req, res) => {
     }
 }
 
+const deleteProduct = async(req,res) => {
+    const {
+        id
+    } = req.body;
+    try{
+        const deleteProduct = await pool.query("DELETE FROM products WHERE product_id = $1",[id]);
+        return res.status(200).send(deleteProduct.rows);
+    }catch(error){
+        return res.status(500).send({error:"error deleting a product"});
+    }
+}
+
 const router = Router();
 router.post('/store',createProduct);
 router.get('/store/products',getAllProducts);
+router.delete('/deleteProduct',deleteProduct);
 module.exports = router;
