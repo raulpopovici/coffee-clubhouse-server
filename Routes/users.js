@@ -28,18 +28,16 @@ const createUser = async (req,res) =>{
                 error:"pass does not match"
             })
         }
+
         if(validateEmail(email)===false){
             return res.status(400).send({
                 error:"email is not valid"
             })
 
         }
-        
 
         const hashPassword = await bcrypt.hash(password,8);
-
         const createdUser = await pool.query("INSERT INTO users(username,email,password) VALUES ($1,$2,$3) RETURNING username,email",[username,email,hashPassword]);
-        
         return res.status(201).send(createdUser.rows[0]);
 
     } catch (error) {

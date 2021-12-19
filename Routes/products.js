@@ -12,9 +12,7 @@ const createProduct = async(req, res) => {
     
     try{
 
-        console.log("before  pool");
         const createdProduct = await pool.query("INSERT INTO products(name,price,coffee_type,country_origin,image) VALUES ($1,$2,$3,$4,$5) RETURNING *",[name,price,coffee_type,country_origin,image]);
-        console.log("after pool");
         return res.status(201).send(createdProduct.rows[0]);
 
     }catch(error){
@@ -34,9 +32,9 @@ const getAllProducts = async(req, res) => {
 const deleteProduct = async(req,res) => {
     const {
         id
-    } = req.body;
+    } = req.params;
     try{
-        const deleteProduct = await pool.query("DELETE FROM products WHERE product_id = $1",[id]);
+        const deleteProduct = await pool.query("DELETE FROM products WHERE id = $1",[id]);
         return res.status(200).send(deleteProduct.rows);
     }catch(error){
         return res.status(500).send({error:"error deleting a product"});
@@ -46,5 +44,5 @@ const deleteProduct = async(req,res) => {
 const router = Router();
 router.post('/store',createProduct);
 router.get('/store/products',getAllProducts);
-router.delete('/deleteProduct',deleteProduct);
+router.delete('/deleteProduct/:id',deleteProduct);
 module.exports = router;
